@@ -13,8 +13,6 @@ export default function EditIncome() {
 
         if (income !== undefined && income !== 0) {
           setIncome(income);
-        } else {
-          console.error("Income is either undefined or 0");
         }
       };
 
