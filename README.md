@@ -5,7 +5,7 @@ this app will serve as offline and personal money management app.
 
 ## feature
 
-- Income divider (comming soon)
+- Income divider
 - Targeting saving (Comming soon)
 - expense recorder (Comming soon)
 - And many more through out deveopment
