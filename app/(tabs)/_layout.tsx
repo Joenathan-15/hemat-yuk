@@ -16,7 +16,7 @@ export default function TabLayout() {
         name="Target"
         options={{
           headerShown:false,
-          title: 'Target',
+          title: 'Wishlist',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="bullseye" color={color} />,
         }}
       />

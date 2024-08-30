@@ -1,9 +1,13 @@
 import { Text, View } from "react-native";
 import { Button, Card, Slider } from "@rneui/themed";
 import { router, useFocusEffect } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FormatCurrency } from "../../lib/FormatCurrency";
-import { GetMonthlyIncome, GetSpendingDivider, StoreSpendingDivider } from "../../lib/AccessStorage";
+import {
+  GetMonthlyIncome,
+  GetSpendingDivider,
+  StoreSpendingDivider,
+} from "../../lib/AccessStorage";
 
 export default function Home() {
   const [dividerValue, setdividerValue] = useState<number>(0);
@@ -16,13 +20,17 @@ export default function Home() {
       const GetIncome = async () => {
         const income = await GetMonthlyIncome();
         const DividerPercentage = await GetSpendingDivider();
-        const NumberDividerPercentage = DividerPercentage? +DividerPercentage : 0;
-        setdividerValue(NumberDividerPercentage);
         const NumberdIncome = income ? +income : 0;
+        const NumberDividerPercentage = DividerPercentage
+          ? +DividerPercentage
+          : 0;
+        setdividerValue(NumberDividerPercentage);
         setmonthlyIncome(NumberdIncome);
         if (income !== undefined && income !== 0) {
-          const formattedIncome = await FormatCurrency(income);
+          const formattedIncome = FormatCurrency(income);
           setFormattedMonthlyIncome(formattedIncome);
+        }else{
+          setFormattedMonthlyIncome("Rp 0")
         }
       };
 
@@ -31,7 +39,7 @@ export default function Home() {
   );
 
   return (
-    <View style={{ marginVertical: 20 }}>
+    <View style={{ marginVertical: 30 }}>
       <Card>
         <Card.Title>Your Monthly Income</Card.Title>
         <Card.Divider />
@@ -70,7 +78,7 @@ export default function Home() {
           value={dividerValue}
           onValueChange={setdividerValue}
           maximumValue={100}
-          thumbStyle={{ height: 20, width: 20, backgroundColor: "#92c5eb" }}
+          thumbStyle={{ height: 25, width: 25, backgroundColor: "#92c5eb" }}
         ></Slider>
       </Card>
       <Card>
@@ -83,6 +91,15 @@ export default function Home() {
             { minimumFractionDigits: 0 }
           )}
         </Text>
+        <Button
+          onPress={() => {
+            router.push("modal/SpendingModal");
+          }}
+          size="sm"
+          type="outline"
+        >
+          Details
+        </Button>
       </Card>
       <Card>
         <Card.Title>Saving Budget</Card.Title>
@@ -93,6 +110,15 @@ export default function Home() {
             minimumFractionDigits: 0,
           })}
         </Text>
+        <Button
+          onPress={() => {
+            router.push("modal/SavingModal");
+          }}
+          size="sm"
+          type="outline"
+        >
+          Details
+        </Button>
       </Card>
     </View>
   );

@@ -10,17 +10,27 @@ export default function EditIncome() {
     useCallback(() => {
       const GetIncome = async () => {
         const income = await GetMonthlyIncome();
-
         if (income !== undefined && income !== 0) {
           setIncome(income);
+          formatText(income)
+        }else{
+          setIncome("0")
         }
       };
-
       GetIncome();
     }, [])
   );
 
-
+  function formatText(income: string | undefined | null) {
+    const sanitizedIncome = income ? income.replace(/[^0-9]/g, '') : '';
+    const numberIncome = sanitizedIncome ? parseFloat(sanitizedIncome) : NaN;
+    if (!isNaN(numberIncome)) {
+      setIncome(numberIncome.toLocaleString('id-ID'));
+    } else {
+      setIncome(income || '');
+    }
+  }
+    
   function storeIncome(){
     StoreMonthlyIncome(income)
     router.dismiss();
@@ -29,7 +39,7 @@ export default function EditIncome() {
   return (
     <View>
       <Card>
-        <Input value={income} onChangeText={(newIncome) => setIncome(newIncome)} placeholder='Monthly Income' inputMode='numeric'></Input>
+        <Input value={income} onChangeText={(newIncome) => formatText(newIncome)} placeholder='Monthly Income' inputMode='numeric'></Input>
         <Button onPress={storeIncome} size="sm" type="solid">
           Save
         </Button>
